@@ -6,7 +6,7 @@
 * Twitch : Simple Server Programming in C/C++
 *
 * Contact Email : daocamberskies@googlemail.com
-* Github		: 
+* Github		: https://github.com/Avengez/Server_Base.git
 * Twitch		: frazorbladezsharp
 * Youtube		: Frazor Sharp
 *
