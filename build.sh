@@ -1,0 +1,4 @@
+
+cd Executable
+qmake ../
+make
