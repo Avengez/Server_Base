@@ -47,15 +47,25 @@ void AmberData_add_interger(
 {
 	const char* delimeter =		// memory location for our data seperator
 		"#";					// we shall use the '#' symbol to spilt up our data.
-	SDL_itoa(					// change an integer to ascii string format
-		information,			// i32 interger to change
-		current_data->data,		// memory address for storage
-		10						// format in base 10 = decimal.
-	);
+
 	strcat(						// concaternate 2 strings
 		current_data->data,		// memory address for the first string
 		delimeter				// memory address for second string
 	);							// Note : resulting string placed in the first address
+
+	char temp_buffer[MAX_DATA_ITEM_LENGTH];
+
+	SDL_itoa(					// change an integer to ascii string format
+		information,			// i32 interger to change
+		temp_buffer,   			// memory address for temporary storage
+		10						// format in base 10 = decimal.
+	);
+
+	strcat(						// concaternate 2 strings
+		current_data->data,
+		temp_buffer				// add our temp buffer to our data
+	);
+	
 	current_data->data_length = // memory address for storage
 		(i32)strlen(			// find the string length as an interger(i32)
 			current_data->data	// memory address of string to be measured

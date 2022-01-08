@@ -37,7 +37,7 @@ int main(int argc, char* argv[])
     );
 
 	AmberNet_Init(
-		host_ipaddress, // NULL for the server (UDP)
+		host_ipaddress,         // INADDR_ANY for a server (UDP)
 		port_in,
 		port_out
 	);
@@ -63,6 +63,13 @@ int main(int argc, char* argv[])
 			data_incomming.delimiter = '#';
 
 			//******************************
+			
+            // REMOVE : for testing only ******
+            printf(
+                "\nData incoming = %s\n\n",
+                data_incomming.character_string
+            );
+			//*********************************
 
 			AmberData_Split_String(
 				&data_incomming
@@ -70,12 +77,13 @@ int main(int argc, char* argv[])
 
 			//*********************************
 
-			for (int index = 0; index < data_incomming.num_lines; ++index)
+			for (int index = 0; index <= data_incomming.num_lines; ++index)
 			{
 				printf(
-                    "item %d = %d\n",
+                    "   item %d = (%s)...%d\n",
                     index,
-                    SDL_atoi(
+                    data_incomming.split_string_buffer[index],
+                    atoi(
                           data_incomming.split_string_buffer[index]
                     )
                 );
