@@ -13,6 +13,8 @@
 * ______________________________________________________*/
 
 #include "AmberCommon.h"
+#include "UDPnetwork/AmberUDP.h"
+#include "Data/Conversion.h"
 
 int main(int argc, char* argv[])
 {
@@ -22,6 +24,10 @@ int main(int argc, char* argv[])
         argv[0]
     );
 
+    const char* host_ipaddress = INADDR_ANY;
+	i32 port_in = 2021;
+	i32 port_out = 2022;
+
 
 
     // Initialize each area of the Program ************************
@@ -29,6 +35,12 @@ int main(int argc, char* argv[])
     SDL_Init(                   // Initialize all of the
         SDL_INIT_EVERYTHING     // Simple Direct Media Layer
     );
+
+	AmberNet_Init(
+		host_ipaddress, // NULL for the server (UDP)
+		port_in,
+		port_out
+	);
 
 
 
@@ -39,12 +51,51 @@ int main(int argc, char* argv[])
 
     while(program_is_running)
     {
-        program_is_running = SDL_FALSE;
+        
+		AmberData_split_buffer data_incomming;
+
+        data_incomming.character_string = AmberNet_Recieve_Data();
+		
+		if (data_incomming.character_string[0] != 0)
+		{
+			//******************************
+
+			data_incomming.delimiter = '#';
+
+			//******************************
+
+			AmberData_Split_String(
+				&data_incomming
+			);
+
+			//*********************************
+
+			for (int index = 0; index < data_incomming.num_lines; ++index)
+			{
+				printf(
+                    "item %d = %d\n",
+                    index,
+                    SDL_atoi(
+                          data_incomming.split_string_buffer[index]
+                    )
+                );
+			}
+			
+			program_is_running = false;
+		}
+		
+		SDL_Delay(
+            16
+        );
+
+        //program_is_running = false; //REMOVE : BUILD TEST ONLY
     }
 
 
     
     // Clean up the resources used *******************************
+
+    AmberNet_Quit();
 
     SDL_Quit();
 

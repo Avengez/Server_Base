@@ -15,17 +15,12 @@
 
 #include "AmberCommon.h"
 
-// Global Variables ************************************
-char AmberData_char_buffer[MAX_DATA_ITEMS][MAX_DATA_ITEM_LENGTH];
-
-void AmberData_Reset_Buffers();
 
 void AmberData_add_interger(
 	i32 information,
 	AmberNet_Data* current_data
 );
 
-int AmberData_Split_String(
-	char* character_string,
-	char delimiter
+void AmberData_Split_String(
+	AmberData_split_buffer* split_buffer
 );

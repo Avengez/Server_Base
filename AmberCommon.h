@@ -48,3 +48,11 @@ typedef struct
 
 }AmberNet_Data;
 
+typedef struct 
+{
+	char* character_string;
+	char delimiter;
+	char split_string_buffer[MAX_DATA_ITEMS][MAX_DATA_ITEM_LENGTH];
+	i32 num_lines;
+
+} AmberData_split_buffer;

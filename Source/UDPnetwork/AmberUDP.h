@@ -16,15 +16,7 @@
 
 #include "AmberCommon.h"
 
-UDPsocket amber_net_socket;
-UDPpacket* amber_net_in;
-UDPpacket* amber_net_out;
-IPaddress amber_net_ipaddress;
-IPaddress current_usersIP;
 
-char amber_net_buffer[NETWORK_BUFFER_SIZE];
-
-i32 amber_net_channel;
 
 // Initialize the UDP Server
 IPaddress AmberNet_Init(

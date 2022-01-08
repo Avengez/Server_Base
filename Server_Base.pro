@@ -3,6 +3,8 @@ QT -= gui core
 CONFIG += c++11 console debug
 CONFIG -= app_bundle
 
+INCLUDEPATH += $$PWD/Source
+DEPENDPATH += $$PWD/Source
 
 LIBS +=  -lSDL2main -lSDL2 -lSDL2_net
 
