@@ -15,7 +15,7 @@
 
 
 #include "AmberCommon.h"
-
+#include "Data/Conversion.h"
 
 
 // Initialize the UDP Server
@@ -31,7 +31,9 @@ i32 AmberNet_Send_Data(
 );
 
 // Recieve Data
-char* AmberNet_Recieve_Data();
+void AmberNet_Recieve_Data(
+	AmberData_split_buffer* amber_net_buffer
+);
 
 IPaddress AmberNet_UserID();
 

@@ -14,19 +14,18 @@
 
 #include "AmberCommon.h"
 #include "UDPnetwork/AmberUDP.h"
-#include "Data/Conversion.h"
 
 int main(int argc, char* argv[])
 {
     printf(
         "%d %s\n\nWelcome to the Server_Base.\n",
-        argc,
-        argv[0]
+        argc,                   // used here to prevent compiler warning
+        argv[0]                 // these variables are required for SDL
     );
 
     const char* host_ipaddress = INADDR_ANY;
-	i32 port_in = 2021;
-	i32 port_out = 2022;
+	i32 port_in = 2021;         // make sure ports are not used by OS
+	i32 port_out = 2022;        // these ports are reversed on the client
 
 
 
@@ -46,37 +45,40 @@ int main(int argc, char* argv[])
 
     // Main Program Loop ******************************************
     
-    u8 program_is_running = SDL_TRUE;
+    u8 program_is_running = SDL_TRUE; // set to run the main loop
     
 
-    while(program_is_running)
-    {
-        
-		AmberData_split_buffer data_incomming;
-
-        data_incomming.character_string = AmberNet_Recieve_Data();
+    do
+    {       
 		
-		if (data_incomming.character_string[0] != 0)
+        
+        
+        // check for incomming requests ***************************
+    
+           /******* Structure : AmberData_split_buffer ************ 
+
+        	char character_string[NETWORK_BUFFER_SIZE];
+	        char delimiter;
+	        char split_string_buffer[MAX_DATA_ITEMS][MAX_DATA_ITEM_LENGTH];
+	        i32 num_lines;
+
+            *******************************************************/
+    
+        AmberData_split_buffer data_incomming;  //data storage structure
+
+        AmberNet_Recieve_Data(
+            &data_incomming         
+        );
+        //*********************************************************
+		
+	
+        // act on which service is requested **********************
+    	if (data_incomming.character_string[0] != 0)
 		{
-			//******************************
-
-			data_incomming.delimiter = '#';
-
-			//******************************
-			
-            // REMOVE : for testing only ******
-            printf(
-                "\nData incoming = %s\n\n",
-                data_incomming.character_string
-            );
-			//*********************************
-
-			AmberData_Split_String(
-				&data_incomming
-			);
-
-			//*********************************
-
+            
+            
+            
+            //REMOVE : BUILD TEST ONLY ****************************
 			for (int index = 0; index <= data_incomming.num_lines; ++index)
 			{
 				printf(
@@ -88,21 +90,26 @@ int main(int argc, char* argv[])
                     )
                 );
 			}
-			
-			program_is_running = false;
+            
+			program_is_running = false; // until we have a shutdown service
+            //*****************************************************
+
+
+
 		}
-		
-		SDL_Delay(
-            16
+        //*********************************************************
+
+
+
+		SDL_Delay(                      // give the cpu a break.
+            10                          // value should realy be a timer
         );
 
-        //program_is_running = false; //REMOVE : BUILD TEST ONLY
-    }
-
+    }while(program_is_running);
+    //*************************************************************
 
     
-    // Clean up the resources used *******************************
-
+    // Clean up the resources used ********************************
     AmberNet_Quit();
 
     SDL_Quit();
@@ -110,8 +117,10 @@ int main(int argc, char* argv[])
     printf(
         "\nAll Cleaned up ... returning to Operating System.\n\n"
     );
+    //*************************************************************
 
-    // Exit the Program ****************************************
-    
+
+
+    // Exit the Program *******************************************
     return 0;
 }

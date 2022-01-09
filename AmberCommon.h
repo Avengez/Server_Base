@@ -50,7 +50,7 @@ typedef struct
 
 typedef struct 
 {
-	char* character_string;
+	char character_string[NETWORK_BUFFER_SIZE];
 	char delimiter;
 	char split_string_buffer[MAX_DATA_ITEMS][MAX_DATA_ITEM_LENGTH];
 	i32 num_lines;

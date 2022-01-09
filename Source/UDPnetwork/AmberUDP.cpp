@@ -21,9 +21,6 @@ UDPpacket* amber_net_in;
 UDPpacket* amber_net_out;
 IPaddress amber_net_ipaddress;
 IPaddress current_usersIP;
-
-char amber_net_buffer[NETWORK_BUFFER_SIZE];
-
 i32 amber_net_channel;
 
 
@@ -96,12 +93,14 @@ i32 AmberNet_Send_Data(
 }
 
 // Recieve Data
-char* AmberNet_Recieve_Data()
+void AmberNet_Recieve_Data(
+	AmberData_split_buffer* amber_net_buffer
+)
 {
 	memset(
-		amber_net_buffer,
-		0,
-		NETWORK_BUFFER_SIZE
+		    amber_net_buffer->character_string,
+		    0,
+		    NETWORK_BUFFER_SIZE
 	);
 
 	if (SDLNet_UDP_Recv(amber_net_socket, amber_net_in))
@@ -110,11 +109,18 @@ char* AmberNet_Recieve_Data()
 
 		for (i32 index = 0; index < amber_net_in->len; index++)
 		{
-			amber_net_buffer[index] = amber_net_in->data[index];
+			amber_net_buffer->character_string[index] = 
+				amber_net_in->data[index];
 		}
-	}
 
-	return amber_net_buffer;
+		//************** Split down the incoming data****************
+
+		amber_net_buffer->delimiter = '#';
+
+		AmberData_Split_String(
+			amber_net_buffer
+		);
+	}
 }
 
 IPaddress AmberNet_UserID()
