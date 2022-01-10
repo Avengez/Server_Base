@@ -13,7 +13,7 @@
 * ______________________________________________________*/
 
 #include "AmberCommon.h"
-#include "UDPnetwork/AmberUDP.h"
+#include "Network/AmberUDP.h"
 
 int main(int argc, char* argv[])
 {
@@ -35,7 +35,7 @@ int main(int argc, char* argv[])
         SDL_INIT_EVERYTHING     // Simple Direct Media Layer
     );
 
-	AmberNet_Init(
+	Network_AmberUDP::AmberNet_Init(
 		host_ipaddress,         // INADDR_ANY for a server (UDP)
 		port_in,
 		port_out
@@ -66,7 +66,7 @@ int main(int argc, char* argv[])
     
         AmberData_split_buffer data_incomming;  //data storage structure
 
-        AmberNet_Recieve_Data(
+        Network_AmberUDP::AmberNet_Recieve_Data(
             &data_incomming         
         );
         //*********************************************************
@@ -110,7 +110,7 @@ int main(int argc, char* argv[])
 
     
     // Clean up the resources used ********************************
-    AmberNet_Quit();
+    Network_AmberUDP::AmberNet_Quit();
 
     SDL_Quit();
 

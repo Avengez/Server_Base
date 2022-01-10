@@ -15,12 +15,16 @@
 
 #include "AmberCommon.h"
 
+namespace Data_Conversion
+{
 
-void AmberData_add_interger(
-	i32 information,
-	AmberNet_Data* current_data
-);
+	void AmberData_add_interger(
+		i32 information,
+		AmberNet_Data* current_data
+	);
+	
+	void AmberData_Split_String(
+		AmberData_split_buffer* split_buffer
+	);
 
-void AmberData_Split_String(
-	AmberData_split_buffer* split_buffer
-);
+}

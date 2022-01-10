@@ -12,12 +12,12 @@ LIBS +=  -lSDL2main -lSDL2 -lSDL2_net
 HEADERS += \
     AmberCommon.h \
     Source/Data/Conversion.h \
-    Source/UDPnetwork/AmberUDP.h 
+    Source/Network/AmberUDP.h 
 
 SOURCES += \
     Server_Base.cpp \
     Source/Data/Conversion.cpp \
-    Source/UDPnetwork/AmberUDP.cpp 
+    Source/Network/AmberUDP.cpp 
 
 
 
