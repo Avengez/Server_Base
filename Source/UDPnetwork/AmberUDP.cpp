@@ -158,11 +158,3 @@ void AmberNet_Quit()
 	/* shutdown SDL_net */
 	SDLNet_Quit();
 }
-
-/**
-* Data being transfered : 8 ints ?
-*	User ID
-*	Postion x, y, z axis
-*	Rotation x, y, z axis
-*	Current Status
-*/

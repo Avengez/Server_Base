@@ -79,7 +79,7 @@ int main(int argc, char* argv[])
             
             
             //REMOVE : BUILD TEST ONLY ****************************
-			for (int index = 0; index <= data_incomming.num_lines; ++index)
+			for (int index = 1; index <= data_incomming.num_lines; ++index)
 			{
 				printf(
                     "   item %d = (%s)...%d\n",
