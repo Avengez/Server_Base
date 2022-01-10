@@ -73,29 +73,45 @@ int main(int argc, char* argv[])
 		
 	
         // act on which service is requested **********************
+        // we can put this into a service manager
+        // and then develope each service separately
     	if (data_incomming.character_string[0] != 0)
 		{
             
-            
-            
-            //REMOVE : BUILD TEST ONLY ****************************
-			for (int index = 1; index <= data_incomming.num_lines; ++index)
-			{
-				printf(
-                    "   item %d = (%s)...%d\n",
-                    index,
-                    data_incomming.split_string_buffer[index],
-                    atoi(
-                          data_incomming.split_string_buffer[index]
+
+
+            switch(
+                atoi(
+                          data_incomming.split_string_buffer[1]
                     )
-                );
-			}
-            
-			program_is_running = false; // until we have a shutdown service
-            //*****************************************************
+            )
+            {
+                case 1:
+                {
+                    program_is_running = false;
+                    printf(
+                        "\nServer Shutdown requested\n"
+                    );
 
+                    break;
+                }
 
+                default:
+                {
+                    for (int index = 1; index <= data_incomming.num_lines; ++index)
+			        {
+				        printf(
+                            "   item %d = (%s)...%d\n",
+                            index,
+                            data_incomming.split_string_buffer[index],
+                            atoi(
+                                  data_incomming.split_string_buffer[index]
+                            )
+                        );
+			        }
+                }
 
+            };
 		}
         //*********************************************************
 
