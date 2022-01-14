@@ -35,7 +35,7 @@ int main(int argc, char* argv[])
         SDL_INIT_EVERYTHING     // Simple Direct Media Layer
     );
 
-	Network_AmberUDP::AmberNet_Init(
+	AmberNetwork::AmberNet_Init(
 		host_ipaddress,         // INADDR_ANY for a server (UDP)
 		port_in,
 		port_out
@@ -66,7 +66,7 @@ int main(int argc, char* argv[])
     
         AmberData_split_buffer data_incomming;  //data storage structure
 
-        Network_AmberUDP::AmberNet_Recieve_Data(
+        AmberNetwork::AmberNet_Recieve_Data(
             &data_incomming         
         );
         //*********************************************************
@@ -126,7 +126,7 @@ int main(int argc, char* argv[])
 
     
     // Clean up the resources used ********************************
-    Network_AmberUDP::AmberNet_Quit();
+    AmberNetwork::AmberNet_Quit();
 
     SDL_Quit();
 
@@ -140,3 +140,8 @@ int main(int argc, char* argv[])
     // Exit the Program *******************************************
     return 0;
 }
+
+
+/*
+
+*/

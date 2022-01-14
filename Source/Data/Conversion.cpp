@@ -14,7 +14,7 @@
 
 #include "Conversion.h"
 
-namespace Data_Conversion
+namespace AmberData
 {
 	//*********************************************************************************
 	/// ************************* AmberData_add_interger ******************************

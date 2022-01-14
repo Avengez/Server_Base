@@ -17,7 +17,7 @@
 #include "AmberCommon.h"
 #include "Data/Conversion.h"
 
-namespace Network_AmberUDP
+namespace AmberNetwork
 {
 	// Initialize the UDP Server
 	IPaddress AmberNet_Init(

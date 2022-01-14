@@ -15,7 +15,7 @@
 
 #include "AmberCommon.h"
 
-namespace Data_Conversion
+namespace AmberData
 {
 
 	void AmberData_add_interger(

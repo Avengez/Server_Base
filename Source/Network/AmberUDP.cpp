@@ -15,7 +15,7 @@
 #include "AmberUDP.h"
 
 
-namespace Network_AmberUDP
+namespace AmberNetwork
 {
 	UDPsocket amber_net_socket;
 	UDPpacket* amber_net_in;
@@ -132,7 +132,7 @@ namespace Network_AmberUDP
 			amber_net_buffer->delimiter = 
 				'#';
 	
-			Data_Conversion::AmberData_Split_String(
+			AmberData::AmberData_Split_String(
 				amber_net_buffer
 			);
 		}
