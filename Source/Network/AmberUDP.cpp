@@ -214,7 +214,7 @@ namespace AmberNetwork
 					reply.data_length = 
 						(i32)strlen(data_incomming.character_string);
 					
-					for(i32 index = 0; index < reply.data_length; ++index)
+					for(i32 index = 0; index <= reply.data_length; ++index)
 					{
 						reply.data[index] = 
 							data_incomming.character_string[index];
