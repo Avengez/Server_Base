@@ -17,6 +17,7 @@
 #define NETWORK_BUFFER_SIZE 200
 #define MAX_DATA_ITEMS 10		// Note must be 1 more than your requirements.
 #define MAX_DATA_ITEM_LENGTH 20 
+#define MAX_USERS 25
 
 // Additional included libraries ************************
 #include <SDL2/SDL.h>
@@ -38,7 +39,18 @@ typedef int8_t		i8;
 typedef int32_t     i32;
 typedef int64_t     i64;
 
-// Structures ******************************************
+// Enumerted Values *************************************
+
+enum AmberNet_Service
+{
+
+	SHUTDOWN = 1,
+	JOIN = 256,
+	CHAT = 1024
+
+};
+
+// Structures Server ************************************
 
 typedef struct
 {
@@ -46,7 +58,7 @@ typedef struct
 	i32 data_length;
 	IPaddress sending_address;
 
-}AmberNet_Data;
+} AmberNet_Data;
 
 typedef struct 
 {
@@ -56,3 +68,11 @@ typedef struct
 	i32 num_lines;
 
 } AmberData_split_buffer;
+
+typedef struct
+{
+	u8 user_id;
+	IPaddress user_address;
+
+} AmberNet_Users;
+

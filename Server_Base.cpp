@@ -49,73 +49,8 @@ int main(int argc, char* argv[])
     
 
     do
-    {       
-		
-        
-        
-        // check for incomming requests ***************************
-    
-           /******* Structure : AmberData_split_buffer ************ 
-
-        	char character_string[NETWORK_BUFFER_SIZE];
-	        char delimiter;
-	        char split_string_buffer[MAX_DATA_ITEMS][MAX_DATA_ITEM_LENGTH];
-	        i32 num_lines;
-
-            *******************************************************/
-    
-        AmberData_split_buffer data_incomming;  //data storage structure
-
-        AmberNetwork::AmberNet_Recieve_Data(
-            &data_incomming         
-        );
-        //*********************************************************
-		
-	
-        // act on which service is requested **********************
-        // we can put this into a service manager
-        // and then develope each service separately
-    	if (data_incomming.character_string[0] != 0)
-		{
-            
-
-
-            switch(
-                atoi(
-                          data_incomming.split_string_buffer[1]
-                    )
-            )
-            {
-                case 1:
-                {
-                    program_is_running = false;
-                    printf(
-                        "\nServer Shutdown requested\n"
-                    );
-
-                    break;
-                }
-
-                default:
-                {
-                    for (int index = 1; index <= data_incomming.num_lines; ++index)
-			        {
-				        printf(
-                            "   item %d = (%s)...%d\n",
-                            index,
-                            data_incomming.split_string_buffer[index],
-                            atoi(
-                                  data_incomming.split_string_buffer[index]
-                            )
-                        );
-			        }
-                }
-
-            };
-		}
-        //*********************************************************
-
-
+    {
+        program_is_running = AmberNetwork::Service_Manager();
 
 		SDL_Delay(                      // give the cpu a break.
             10                          // value should realy be a timer
@@ -140,8 +75,3 @@ int main(int argc, char* argv[])
     // Exit the Program *******************************************
     return 0;
 }
-
-
-/*
-
-*/

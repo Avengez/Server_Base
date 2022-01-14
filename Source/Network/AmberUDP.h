@@ -35,6 +35,8 @@ namespace AmberNetwork
 	void AmberNet_Recieve_Data(
 		AmberData_split_buffer* amber_net_buffer
 	);
+
+	u8 Service_Manager();
 	
 	IPaddress AmberNet_UserIP();
 	
