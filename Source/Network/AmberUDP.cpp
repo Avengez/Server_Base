@@ -17,64 +17,63 @@
 
 namespace AmberNetwork
 {
-	UDPsocket amber_net_socket_in;
-	UDPsocket amber_net_socket_out;
+	// Global Variables used across all functions ******************
+
+	UDPsocket amber_net_socket;
+
 	UDPpacket* amber_net_in;
+
 	UDPpacket* amber_net_out;
+
 	IPaddress amber_net_ipaddress;
+
 	IPaddress current_usersIP;
 	
 	static i32 amber_net_channel =
 		-1;
 	
 	u8 users_connected;
+
 	AmberNet_Users users_logged_in[MAX_USERS];
 	
-	// Initialize the UDP Server
+
+
+	// Initialize the UDP Server **********************************
+	
 	IPaddress AmberNet_Init(
 		const char* host_ipaddress, // NULL for the server
-		i32 port_in,
-		i32 port_out
+		i32 port
 	)
 	{
 		users_connected = -1;
 
-		/* initialize SDL_net */
+
+
+		//initialize SDL_net *************************************
 	
-		if (SDLNet_Init() == -1)
-		{
-			printf(
-				"SDLNet_Init: %s\n",
-				SDLNet_GetError()
-			);
-	
-			exit(
-				2
-			);
-		}
-	
+		SDLNet_Init();
+
+
+
 		SDLNet_ResolveHost(
 			&amber_net_ipaddress,
 			host_ipaddress,
-			port_out
+			port
 		);
 	
-		amber_net_socket_in = 
+		amber_net_socket = 
 			SDLNet_UDP_Open(
-				port_in
+				port
 		);
 
-		amber_net_socket_out = 
-			SDLNet_UDP_Open(
-				port_out
-		);
-	
 		SDLNet_UDP_Bind(
-			amber_net_socket_in,
+			amber_net_socket,
 			amber_net_channel,
 			&amber_net_ipaddress
 		);
-	
+
+
+
 		amber_net_in = 
 			SDLNet_AllocPacket(
 				NETWORK_BUFFER_SIZE
@@ -88,7 +87,8 @@ namespace AmberNetwork
 		return amber_net_ipaddress;
 	}
 	
-	// Send Data
+	// Send Data **************************************************
+	
 	i32 AmberNet_Send_Data(
 		AmberNet_Data* current_data
 	)
@@ -106,15 +106,21 @@ namespace AmberNetwork
 			current_data->sending_address;
 	
 		i32 error = SDLNet_UDP_Send(
-			amber_net_socket_out,
+			amber_net_socket,
 			amber_net_channel,
 			amber_net_out
 		);
-	
+
+		amber_net_out =
+			0;
+			
 		return error;			
 	}
 	
-	// Recieve Data
+
+
+	// Recieve Data ************************************************
+	
 	void AmberNet_Recieve_Data(
 		AmberData_split_buffer* amber_net_buffer
 	)
@@ -124,8 +130,10 @@ namespace AmberNetwork
 			    0,
 			    NETWORK_BUFFER_SIZE
 		);
+
+
 	
-		if (SDLNet_UDP_Recv(amber_net_socket_in, amber_net_in))
+		if (SDLNet_UDP_Recv(amber_net_socket, amber_net_in))
 		{
 			current_usersIP = 
 				amber_net_in->address;
@@ -136,7 +144,7 @@ namespace AmberNetwork
 					amber_net_in->data[index];
 			}
 	
-			//************** Split down the incoming data****************
+			//Split down the incoming data ************************
 	
 			amber_net_buffer->delimiter = 
 				'#';
@@ -147,41 +155,40 @@ namespace AmberNetwork
 		}
 	}
 
+
+
+	// Handel Requests ********************************************
+	
 	u8 Service_Manager()
 	{
 		u8 server_running = SDL_TRUE;
 
-		// check for incomming requests ***************************
 
-	        /******* Structure : AmberData_split_buffer ************ 
+    //*************************************************************
 
-        	char character_string[NETWORK_BUFFER_SIZE];
-	        char delimiter;
-	        char split_string_buffer[MAX_DATA_ITEMS][MAX_DATA_ITEM_LENGTH];
-	        i32 num_lines;
-
-            *******************************************************/
-    
-        AmberData_split_buffer data_incomming;  //data storage structure
+        AmberData_split_buffer data_incomming;  
 
         AmberNetwork::AmberNet_Recieve_Data(
             &data_incomming         
         );
 
-        //*********************************************************
+    //*************************************************************
+
+
 
 		// act on which service is requested **********************
-
+		
 		if (data_incomming.character_string[0] != 0)
 		{
-			
+			i32 service =
+				atoi(
+            		data_incomming.split_string_buffer[1]
+            	);
 
-            switch(
-                atoi(
-                          data_incomming.split_string_buffer[1]
-                    )
-            )
+			// Respond by calling the Service *********************
+            switch(service)
             {
+				//*************************************************
                 case AmberNet_Service::SHUTDOWN :
                 {
                     printf(
@@ -193,6 +200,7 @@ namespace AmberNetwork
                     break;
                 }
 
+				//*************************************************
 				case AmberNet_Service::JOIN :
 				{
 					AmberNet_Data reply;
@@ -208,9 +216,6 @@ namespace AmberNetwork
 					users_logged_in[users_connected].user_address =
 						current_usersIP;
 					
-					// reply.data[0] = 
-					// 	data_incomming.character_string[0];
-
 					reply.data_length = 
 						(i32)strlen(data_incomming.character_string);
 					
@@ -223,7 +228,7 @@ namespace AmberNetwork
 					reply.sending_address =
 						users_logged_in[users_connected].user_address;
 
-					/*i32*/ AmberNet_Send_Data(
+					AmberNet_Send_Data(
 						&reply
 					);
 					
@@ -244,12 +249,14 @@ namespace AmberNetwork
 					break;
 				}
 
+				//*************************************************
 				case AmberNet_Service::CHAT :
 				{
 
 					break;
 				}
 
+				//*************************************************
                 default:
                 {
                     for (int index = 1; index <= data_incomming.num_lines; ++index)
@@ -264,50 +271,44 @@ namespace AmberNetwork
                         );
 			        }
                 }
+
+				//*************************************************
             };
 		}
-		
+    //*************************************************************
+
+
+
 		return server_running;
 	}
 	
-	IPaddress AmberNet_UserIP()
-	{
-		return current_usersIP; // only call this function if data recieved.
-	}
+
+
+	// Close the UDP Server ****************************************
 	
-	IPaddress AmberNet_ServerIP()
-	{
-		return amber_net_ipaddress;
-	}
-	
-	// Close the UDP Server
 	void AmberNet_Quit()
 	{
-		/* free packet */
-		// SDLNet_FreePacket(
-		// 	amber_net_out
-		// );
-	
-		// SDLNet_FreePacket(
-		// 	amber_net_in
-		// );
-	
-		/* close the sockets */
-		// SDLNet_UDP_Unbind(
-		// 	amber_net_socket_out,
-		// 	amber_net_channel
-		// );
-
-		// SDLNet_UDP_Unbind(
-		// 	amber_net_socket_in,
-		// 	amber_net_channel
-		// );
+		SDLNet_UDP_Unbind(
+			amber_net_socket,
+			amber_net_channel
+		);
 	
 		SDLNet_UDP_Close(
-			amber_net_socket_in
+			amber_net_socket
+		);
+
+		/* free packet */
+		SDLNet_FreePacket(
+			amber_net_out
+		);
+	
+		SDLNet_FreePacket(
+			amber_net_in
 		);
 	
 		/* shutdown SDL_net */
 		SDLNet_Quit();
 	}
+
+	//*************************************************************
 }

@@ -24,8 +24,8 @@ int main(int argc, char* argv[])
     );
 
     const char* host_ipaddress = INADDR_ANY;
-	i32 port_in = 2021;         // make sure ports are not used by OS
-	i32 port_out = 2022;        // these ports are reversed on the client
+
+	i32 port = 2022;            // make sure ports are not used by OS
 
 
 
@@ -37,9 +37,11 @@ int main(int argc, char* argv[])
 
 	AmberNetwork::AmberNet_Init(
 		host_ipaddress,         // INADDR_ANY for a server (UDP)
-		port_in,
-		port_out
+		port
+		//port_out
 	);
+
+    //*************************************************************
 
 
 
@@ -57,9 +59,11 @@ int main(int argc, char* argv[])
         );
 
     }while(program_is_running);
+
     //*************************************************************
 
     
+
     // Clean up the resources used ********************************
     AmberNetwork::AmberNet_Quit();
 

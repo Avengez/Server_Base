@@ -22,8 +22,8 @@ namespace AmberNetwork
 	// Initialize the UDP Server
 	IPaddress AmberNet_Init(
 		const char* host_ipaddress, // NULL for the server
-		i32 port_in,
-		i32 port_out
+		i32 port
+		//i32 port_out
 	);
 	
 	// Send Data
@@ -36,12 +36,9 @@ namespace AmberNetwork
 		AmberData_split_buffer* amber_net_buffer
 	);
 
+	// Handel Requests
 	u8 Service_Manager();
-	
-	IPaddress AmberNet_UserIP();
-	
-	IPaddress AmberNet_ServerIP();
-	
+		
 	// Close the UDP Server
 	void AmberNet_Quit();
 }
