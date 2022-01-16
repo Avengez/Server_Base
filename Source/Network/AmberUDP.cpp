@@ -111,9 +111,8 @@ namespace AmberNetwork
 			amber_net_out
 		);
 
-		// amber_net_out =
-		// 	0;
-			
+
+
 		return error;			
 	}
 	
@@ -297,11 +296,6 @@ namespace AmberNetwork
 			amber_net_socket
 		);
 
-		/* free packet */
-		// SDLNet_FreePacket(
-		// 	amber_net_out
-		// );
-	
 		SDLNet_FreePacket(
 			amber_net_in
 		);
