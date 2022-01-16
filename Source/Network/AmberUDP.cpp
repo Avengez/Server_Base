@@ -29,7 +29,7 @@ namespace AmberNetwork
 
 	IPaddress current_usersIP;
 	
-	static i32 amber_net_channel =
+	i32 amber_net_channel =
 		-1;
 	
 	u8 users_connected;
@@ -66,11 +66,12 @@ namespace AmberNetwork
 				port
 		);
 
-		SDLNet_UDP_Bind(
-			amber_net_socket,
-			amber_net_channel,
-			&amber_net_ipaddress
-		);
+		amber_net_channel =
+			SDLNet_UDP_Bind(
+				amber_net_socket,
+				amber_net_channel,
+				&amber_net_ipaddress
+			);
 
 
 
@@ -104,10 +105,10 @@ namespace AmberNetwork
 	
 		amber_net_out->address = 
 			current_data->sending_address;
-	
+
 		i32 error = SDLNet_UDP_Send(
 			amber_net_socket,
-			amber_net_channel,
+			-1,
 			amber_net_out
 		);
 
@@ -218,10 +219,17 @@ namespace AmberNetwork
 					reply.data_length = 
 						(i32)strlen(data_incomming.character_string);
 					
-					for(i32 index = 0; index <= reply.data_length; ++index)
+					for(i32 index = 1; index <= data_incomming.num_lines; ++index)
 					{
-						reply.data[index] = 
-							data_incomming.character_string[index];
+						i32 information =
+							atoi(
+                          		data_incomming.split_string_buffer[index]
+                    		);
+
+						AmberData::AmberData_add_interger(
+							information,
+							&reply
+						);
 					}
 
 					reply.sending_address =
